@@ -1,16 +1,15 @@
-import { getSession } from "@/lib/auth/auth";
 import { redirect } from "next/navigation";
 
-export default async function Dashboard() {
+import { getSession } from "@/lib/auth/auth";
+
+import { Dashboard } from "@/components/dashboard";
+
+export default async function DashboardPage() {
   const session = await getSession();
 
   if (!session?.user) {
     redirect("/");
   }
 
-  return (
-    <div>
-      <h1>123</h1>
-    </div>
-  );
+  return <Dashboard />;
 }
