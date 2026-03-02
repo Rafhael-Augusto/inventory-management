@@ -5,6 +5,7 @@ import { formSchema as logoInFormSchema } from "@/components/auth/login/form/sch
 
 import { auth } from "../auth/auth";
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 type CredentialsType = {
   email: string;
@@ -12,6 +13,8 @@ type CredentialsType = {
   name?: string;
   confirmPassword?: string;
 };
+
+type ProvidersType = "github" | "google";
 
 export const signUp = async ({
   name,
@@ -56,4 +59,17 @@ export const signOut = async () => {
   });
 
   return result;
+};
+
+export const signInSocial = async (provider: ProvidersType) => {
+  const { url } = await auth.api.signInSocial({
+    body: {
+      provider,
+      callbackURL: "/dashboard",
+    },
+  });
+
+  if (url) {
+    redirect(url);
+  }
 };

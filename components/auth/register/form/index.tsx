@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 import { FormData, formSchema } from "./schema";
@@ -12,7 +13,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { HiOutlineIdentification } from "react-icons/hi2";
-import { FaGithub, FaGoogle } from "react-icons/fa";
 import { VscEyeClosed } from "react-icons/vsc";
 import { VscEye } from "react-icons/vsc";
 
@@ -32,24 +32,15 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group";
 
-const socialLogins = [
-  {
-    label: "Registrar com Github",
-    icon: FaGithub,
-    id: 0,
-  },
-  {
-    label: "Registrar com Google",
-    icon: FaGoogle,
-    id: 1,
-  },
-];
+import LoginSocials from "@/components/auth/loginSocials";
 
 export function RegisterForm() {
   const [passVisible, setPassVisible] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const route = useRouter();
 
   const {
     register,
@@ -73,7 +64,11 @@ export function RegisterForm() {
 
       if (!result.user) {
         setError("Erro ao criar conta. Tente novamente");
+
+        return;
       }
+
+      route.push("/dashboard");
     } catch (error: unknown) {
       if (error instanceof Error) {
         setError(error.message);
@@ -87,18 +82,7 @@ export function RegisterForm() {
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="flex flex-col gap-4 items-center w-full">
-        {socialLogins.map((item) => (
-          <div key={item.id} className="w-full">
-            <Button
-              variant={item.id === 1 ? "secondary" : "default"}
-              className="w-full"
-            >
-              <item.icon className="h-6 w-6" /> {item.label}
-            </Button>
-          </div>
-        ))}
-      </div>
+      <LoginSocials setError={setError} />
 
       <div className="flex items-center justify-center gap-2">
         <Separator className="w-1/4!" />
