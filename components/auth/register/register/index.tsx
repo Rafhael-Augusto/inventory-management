@@ -6,7 +6,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import { RegisterForm } from "../form/form";
+import { RegisterForm } from "../form";
 import Link from "next/link";
 
 export function Register() {
