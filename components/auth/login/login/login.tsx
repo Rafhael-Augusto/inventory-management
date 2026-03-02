@@ -6,16 +6,20 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import { LoginForm } from "@/components/login/form/form";
+import { LoginForm } from "@/components/auth/login/form/form";
+import Link from "next/link";
 
 export function Login() {
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <Card className="min-w-md">
+      <Card className="max-w-md w-full ">
         <CardHeader>
           <CardTitle>Fazer login</CardTitle>
           <CardDescription>
-            Faca login com a sua conta para ter acesso
+            Nao tem uma conta?{" "}
+            <Link className="underline text-primary" href={"/auth/register"}>
+              fazer registro
+            </Link>
           </CardDescription>
         </CardHeader>
 

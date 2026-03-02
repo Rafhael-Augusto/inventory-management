@@ -1,8 +1,12 @@
 "use client";
 
+import { useState } from "react";
+
 import Link from "next/link";
 
 import { FormData, formSchema } from "./schema";
+
+import { signIn } from "@/lib/actions/authActions";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,6 +17,7 @@ import { VscEyeClosed } from "react-icons/vsc";
 import { VscEye } from "react-icons/vsc";
 
 import { Separator } from "@/components/ui/separator";
+import { Spinner } from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";
 import {
   Field,
@@ -26,7 +31,6 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group";
-import { useState } from "react";
 
 const socialLogins = [
   {
@@ -44,6 +48,9 @@ const socialLogins = [
 export function LoginForm() {
   const [passVisible, setPassVisible] = useState(false);
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
   const {
     register,
     handleSubmit,
@@ -53,7 +60,29 @@ export function LoginForm() {
   });
 
   async function onSubmit(data: FormData) {
+    setIsLoading(true);
+    setError("");
+
     console.log(data);
+
+    try {
+      const result = await signIn({
+        email: data.email,
+        password: data.password,
+      });
+
+      if (!result.user) {
+        setError("Email ou senha invalido");
+      }
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("Erro inesperado. Tente novamente");
+      }
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -61,16 +90,20 @@ export function LoginForm() {
       <div className="flex flex-col gap-4 items-center w-full">
         {socialLogins.map((item) => (
           <div key={item.id} className="w-full">
-            <Button className="w-full">
+            <Button
+              variant={item.id === 1 ? "secondary" : "default"}
+              className="w-full"
+            >
               <item.icon className="h-6 w-6" /> {item.label}
             </Button>
           </div>
         ))}
       </div>
 
-      <div className="flex flex-col items-center">
+      <div className="flex items-center justify-center gap-2">
+        <Separator className="w-1/4!" />
         <span className="text-muted-foreground">Ou continue com</span>
-        <Separator />
+        <Separator className="w-1/4!" />
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -119,10 +152,14 @@ export function LoginForm() {
               {errors.password && (
                 <FieldError>{errors.password.message}</FieldError>
               )}
+
+              {error && <FieldError>{error}</FieldError>}
             </Field>
 
             <Field>
-              <Button type="submit">Fazer Login</Button>
+              <Button type="submit">
+                {isLoading ? <Spinner /> : "Fazer Login"}
+              </Button>
               <Link href={"/"} className="text-sm text-end hover:underline">
                 Voltar para a pagina inicial
               </Link>
