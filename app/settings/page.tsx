@@ -1,7 +1,7 @@
 import { getSession } from "@/lib/auth/auth";
 import { redirect } from "next/navigation";
 
-export default async function Dashboard() {
+export async function Settings() {
   const session = await getSession();
 
   if (!session?.user) {
@@ -10,7 +10,7 @@ export default async function Dashboard() {
 
   return (
     <div>
-      <h1>123</h1>
+      <h1>test</h1>
     </div>
   );
 }
