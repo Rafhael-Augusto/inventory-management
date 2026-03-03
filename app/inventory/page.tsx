@@ -1,7 +1,8 @@
+import { Inventory } from "@/components/inventory/inventory";
 import { getSession } from "@/lib/auth/auth";
 import { redirect } from "next/navigation";
 
-export async function Inventory() {
+export default async function InventoryPage() {
   const session = await getSession();
 
   if (!session?.user) {
@@ -10,7 +11,7 @@ export async function Inventory() {
 
   return (
     <div>
-      <h1>test</h1>
+      <Inventory />
     </div>
   );
 }
