@@ -1,23 +1,22 @@
-import { Prisma, Product } from "@prisma/client";
+import { Product } from "@prisma/client";
 import { getSession } from "../auth/auth";
 import db from "../prisma";
+
+type FiltersType = {
+  filters?: {
+    searchQuery: string;
+  };
+};
 
 type ProductsStockType = {
   data: {
     totalProductsNumber: number;
     itemsLowStock: Product[];
-    allProducts: Prisma.ProductGetPayload<{
-      select: {
-        price: true;
-        quantity: true;
-        createdAt: true;
-        lowStockAt: true;
-      };
-    }>[];
+    allProducts: Product[];
   };
 };
 
-export async function getProducts() {
+export async function getProducts({ filters }: FiltersType) {
   const session = await getSession();
 
   if (!session.user) {
@@ -29,28 +28,34 @@ export async function getProducts() {
       db.product.count({
         where: {
           userId: session.user.id,
+          ...(filters?.searchQuery
+            ? { name: { contains: filters.searchQuery, mode: "insensitive" } }
+            : {}),
         },
       }),
       db.product.findMany({
         where: {
           userId: session.user.id,
           lowStockAt: { not: null },
+          ...(filters?.searchQuery
+            ? { name: { contains: filters.searchQuery, mode: "insensitive" } }
+            : {}),
         },
       }),
       db.product.findMany({
         where: {
           userId: session.user.id,
-        },
-        select: {
-          price: true,
-          quantity: true,
-          createdAt: true,
-          lowStockAt: true,
+          ...(filters?.searchQuery
+            ? { name: { contains: filters.searchQuery, mode: "insensitive" } }
+            : {}),
         },
       }),
       db.product.findMany({
         where: {
           userId: session.user.id,
+          ...(filters?.searchQuery
+            ? { name: { contains: filters.searchQuery, mode: "insensitive" } }
+            : {}),
         },
         orderBy: { createdAt: "desc" },
         take: 5,
