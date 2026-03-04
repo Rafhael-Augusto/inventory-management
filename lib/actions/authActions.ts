@@ -53,14 +53,6 @@ export const signIn = async ({ email, password }: CredentialsType) => {
   return result;
 };
 
-export const signOut = async () => {
-  const result = await auth.api.signOut({
-    headers: await headers(),
-  });
-
-  return result;
-};
-
 export const signInSocial = async (provider: ProvidersType) => {
   const { url } = await auth.api.signInSocial({
     body: {
@@ -72,4 +64,20 @@ export const signInSocial = async (provider: ProvidersType) => {
   if (url) {
     redirect(url);
   }
+};
+
+export const signOut = async () => {
+  const result = await auth.api.signOut({
+    headers: await headers(),
+  });
+
+  return result;
+};
+
+export const getSession = async () => {
+  const result = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  return result;
 };

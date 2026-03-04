@@ -1,109 +1,35 @@
-import db from "@/lib/prisma";
 import { cn } from "@/lib/utils";
-import { getSession } from "@/lib/auth/auth";
 
 import { TrendingUpIcon } from "lucide-react";
 
 import { Sidebar } from "@/components/sidebar/sidebar";
 import { ProductsChart } from "@/components/dashboard/productsChart";
+import { getProducts, getProductsStock } from "@/lib/queries/products";
 
 export async function Dashboard() {
-  const session = await getSession();
+  const { allProducts, itemsLowStock, recentProducts, totalProductsNumber } =
+    await getProducts();
 
-  const [totalProducts, itemsLowStock, allProducts] = await Promise.all([
-    db.product.count({
-      where: {
-        userId: session.user.id,
-      },
-    }),
-    db.product.findMany({
-      where: {
-        userId: session.user.id,
-        lowStockAt: { not: null },
-      },
-    }),
-    db.product.findMany({
-      where: {
-        userId: session.user.id,
-      },
-      select: {
-        price: true,
-        quantity: true,
-        createdAt: true,
-        lowStockAt: true,
-      },
-    }),
-  ]);
+  const productsData = {
+    allProducts,
+    itemsLowStock,
+    recentProducts,
+    totalProductsNumber,
+  };
 
-  const now = new Date();
-  const weeklyProductsData = [];
-
-  const inStockCount = allProducts.filter(
-    (product) => Number(product.quantity) > Number(product.lowStockAt),
-  ).length;
-
-  const lowStockCount = allProducts.filter(
-    (product) =>
-      Number(product.quantity) <= Number(product.lowStockAt) &&
-      Number(product.quantity) >= 1,
-  ).length;
-
-  const outOfStockCount = allProducts.filter(
-    (product) => Number(product.quantity) === 0,
-  ).length;
-
-  const inStockPercentage =
-    totalProducts > 0 ? Math.round((inStockCount / totalProducts) * 100) : 0;
-
-  const lowStockPercentage =
-    totalProducts > 0 ? Math.round((lowStockCount / totalProducts) * 100) : 0;
-
-  const outOfStockPercentage =
-    totalProducts > 0 ? Math.round((outOfStockCount / totalProducts) * 100) : 0;
-
-  for (let i = 11; i >= 0; i--) {
-    const weekStart = new Date(now);
-    weekStart.setDate(weekStart.getDate() - i * 7);
-    weekStart.setHours(0, 0, 0, 0);
-
-    const weekEnd = new Date(weekStart);
-    weekEnd.setDate(weekEnd.getDate() + 6);
-    weekStart.setHours(23, 59, 59, 999);
-
-    const weekLabel = `${String(weekStart.getDate() + 1).padStart(2, "0")}/${String(weekStart.getMonth() + 1).padStart(2, "0")}`;
-
-    const weekProducts = allProducts.filter((product) => {
-      const productDate = new Date(product.createdAt);
-
-      return productDate >= weekStart && productDate <= weekEnd;
-    });
-
-    weeklyProductsData.push({
-      week: weekLabel,
-      products: weekProducts.length,
-    });
-  }
-
-  const recentProducts = await db.product.findMany({
-    where: {
-      userId: session.user.id,
-    },
-    orderBy: { createdAt: "desc" },
-    take: 5,
-  });
-
-  const lowStock = itemsLowStock.filter(
-    (item) => item.quantity <= item.lowStockAt!,
-  );
-  const totalValue = allProducts.reduce(
-    (sum, product) => sum + Number(product.price) * Number(product.quantity),
-    0,
-  );
+  const {
+    inStockPercentage,
+    lowStock,
+    lowStockPercentage,
+    outOfStockPercentage,
+    totalValue,
+    weeklyProductsData,
+  } = await getProductsStock({ data: productsData });
 
   const productsList = [
     {
       label: "Total de produtos",
-      value: totalProducts,
+      value: totalProductsNumber,
       id: 0,
     },
     {
