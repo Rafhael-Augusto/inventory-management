@@ -8,7 +8,7 @@ import { getProducts, getProductsStock } from "@/lib/queries/products";
 
 export async function Dashboard() {
   const { allProducts, itemsLowStock, recentProducts, totalProductsNumber } =
-    await getProducts();
+    await getProducts({});
 
   const productsData = {
     allProducts,

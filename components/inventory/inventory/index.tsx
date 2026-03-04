@@ -1,5 +1,7 @@
-import db from "@/lib/prisma";
-import { Sidebar } from "../../sidebar/sidebar";
+import { getProducts } from "@/lib/queries/products";
+import { cn } from "@/lib/utils";
+
+import { Sidebar } from "@/components/sidebar/sidebar";
 import {
   Table,
   TableBody,
@@ -7,11 +9,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../../ui/table";
-import { getSession } from "@/lib/auth/auth";
-import { redirect } from "next/navigation";
-import { cn } from "@/lib/utils";
-import { ProductActions } from "../productActions";
+} from "@/components/ui/table";
+
+import { ProductActions } from "@/components/inventory/productActions";
 
 const tableHeads = [
   "Nome",
@@ -22,36 +22,22 @@ const tableHeads = [
   "Acoes",
 ];
 
-export async function Inventory() {
-  const session = await getSession();
+type SearchParams = {
+  searchParams?: {
+    search?: string;
+  };
+};
 
-  if (!session?.user) {
-    redirect("/");
-  }
-
-  const totalProducts = await db.product.findMany({
-    where: {
-      userId: session.user.id,
-    },
+export async function Inventory({ searchParams }: SearchParams) {
+  const { allProducts } = await getProducts({
+    filters: { searchQuery: searchParams?.search ?? "" },
   });
+
   return (
     <div className="min-h-screen">
       <Sidebar currentPath="/inventory" />
 
-      <main className="ml-64 p-8">
-        <div className="mb-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-primary text-2xl font-semibold">
-                Inventario
-              </h1>
-              <p className="text-sm text-muted-foreground">
-                Gerencie seus produtos e acompanhe os níveis de estoque
-              </p>
-            </div>
-          </div>
-        </div>
-
+      <main>
         <div>
           <div className=" rounded-lg border border-gray-200 overflow-hidden">
             <Table>
@@ -69,7 +55,7 @@ export async function Inventory() {
               </TableHeader>
 
               <TableBody className="bg-transparent">
-                {totalProducts.map((product) => {
+                {allProducts.map((product) => {
                   const lowStock =
                     Number(product.quantity) <= Number(product.lowStockAt) &&
                     product.quantity >= 1;
