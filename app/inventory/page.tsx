@@ -1,12 +1,13 @@
 import { Inventory } from "@/components/inventory/inventory";
 import { SearchQuery } from "@/components/inventory/searchQuery";
 import { getSession } from "@/lib/auth/auth";
-import { getProducts } from "@/lib/queries/products";
+
 import { redirect } from "next/navigation";
 
 type SearchParams = {
   searchParams?: {
     search?: string;
+    page?: string;
   };
 };
 
@@ -17,10 +18,15 @@ export default async function InventoryPage({ searchParams }: SearchParams) {
     redirect("/");
   }
 
-  const params = await searchParams;
+  const paramsAwait = await searchParams;
+
+  const params = {
+    search: paramsAwait?.search,
+    page: Number(paramsAwait?.page),
+  };
 
   return (
-    <div className="ml-64 p-8">
+    <div className="ml-64 p-8 h-screen">
       <div>
         <div className="flex items-center justify-between">
           <div>

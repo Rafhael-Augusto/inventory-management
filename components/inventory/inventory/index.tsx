@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/table";
 
 import { ProductActions } from "@/components/inventory/productActions";
+import { FaQuestion } from "react-icons/fa";
+import { PaginationUi } from "@/components/pagination";
 
 const tableHeads = [
   "Nome",
@@ -25,21 +27,25 @@ const tableHeads = [
 type SearchParams = {
   searchParams?: {
     search?: string;
+    page?: number;
   };
 };
 
 export async function Inventory({ searchParams }: SearchParams) {
-  const { allProducts } = await getProducts({
-    filters: { searchQuery: searchParams?.search ?? "" },
+  const { allProducts, totalPages } = await getProducts({
+    filters: {
+      searchQuery: searchParams?.search ?? "",
+      page: searchParams?.page ?? 1,
+    },
   });
 
   return (
-    <div className="min-h-screen">
+    <div className="flex flex-col justify-between h-[72vh]">
       <Sidebar currentPath="/inventory" />
 
       <main>
-        <div>
-          <div className=" rounded-lg border border-gray-200 overflow-hidden">
+        {allProducts.length > 0 ? (
+          <div className="rounded-lg border border-gray-200 overflow-hidden">
             <Table>
               <TableHeader className="bg-secondary">
                 <TableRow>
@@ -97,8 +103,26 @@ export async function Inventory({ searchParams }: SearchParams) {
               </TableBody>
             </Table>
           </div>
-        </div>
+        ) : (
+          <div className="rounded-lg border  py-8 border-gray-200 overflow-hidden">
+            <div className="flex items-center justify-center">
+              <div className="flex flex-col items-center gap-8">
+                <FaQuestion className="text-8xl text-primary" />
+
+                <h2 className="text-primary font-semibold">
+                  Produto não encontrado
+                </h2>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
+
+      {allProducts.length > 0 && (
+        <div className="">
+          <PaginationUi totalPages={totalPages} />
+        </div>
+      )}
     </div>
   );
 }

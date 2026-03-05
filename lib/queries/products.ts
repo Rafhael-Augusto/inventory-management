@@ -4,7 +4,8 @@ import db from "../prisma";
 
 type FiltersType = {
   filters?: {
-    searchQuery: string;
+    searchQuery?: string;
+    page?: number;
   };
 };
 
@@ -23,50 +24,62 @@ export async function getProducts({ filters }: FiltersType) {
     throw new Error("Unauthorized");
   }
 
+  const pageSize = 10;
+
+  const page = Math.max(Number(filters?.page) || 1, 1);
+  const skip = (page - 1) * pageSize;
+
+  const where = {
+    userId: session.user.id,
+    ...(filters?.searchQuery
+      ? {
+          name: {
+            contains: filters.searchQuery,
+            mode: "insensitive" as const,
+          },
+        }
+      : {}),
+  };
+
   const [totalProductsNumber, itemsLowStock, allProducts, recentProducts] =
     await Promise.all([
       db.product.count({
-        where: {
-          userId: session.user.id,
-          ...(filters?.searchQuery
-            ? { name: { contains: filters.searchQuery, mode: "insensitive" } }
-            : {}),
-        },
+        where,
       }),
+
       db.product.findMany({
         where: {
-          userId: session.user.id,
+          ...where,
           lowStockAt: { not: null },
-          ...(filters?.searchQuery
-            ? { name: { contains: filters.searchQuery, mode: "insensitive" } }
-            : {}),
         },
       }),
+
       db.product.findMany({
-        where: {
-          userId: session.user.id,
-          ...(filters?.searchQuery
-            ? { name: { contains: filters.searchQuery, mode: "insensitive" } }
-            : {}),
+        where,
+        skip,
+        take: pageSize,
+        orderBy: {
+          createdAt: "desc",
         },
       }),
+
       db.product.findMany({
-        where: {
-          userId: session.user.id,
-          ...(filters?.searchQuery
-            ? { name: { contains: filters.searchQuery, mode: "insensitive" } }
-            : {}),
-        },
+        where,
         orderBy: { createdAt: "desc" },
         take: 5,
       }),
     ]);
+
+  const totalPages = Math.ceil(totalProductsNumber / pageSize);
 
   return {
     totalProductsNumber,
     itemsLowStock,
     allProducts,
     recentProducts,
+    currentPage: page,
+    pageSize,
+    totalPages,
   };
 }
 
@@ -116,9 +129,12 @@ export async function getProductsStock({ data }: ProductsStockType) {
 
     const weekEnd = new Date(weekStart);
     weekEnd.setDate(weekEnd.getDate() + 6);
-    weekStart.setHours(23, 59, 59, 999);
+    weekEnd.setHours(23, 59, 59, 999);
 
-    const weekLabel = `${String(weekStart.getDate() + 1).padStart(2, "0")}/${String(weekStart.getMonth() + 1).padStart(2, "0")}`;
+    const weekLabel = `${String(weekStart.getDate()).padStart(
+      2,
+      "0",
+    )}/${String(weekStart.getMonth() + 1).padStart(2, "0")}`;
 
     const weekProducts = data.allProducts.filter((product) => {
       const productDate = new Date(product.createdAt);
@@ -135,6 +151,7 @@ export async function getProductsStock({ data }: ProductsStockType) {
   const lowStock = data.itemsLowStock.filter(
     (item) => item.quantity <= item.lowStockAt!,
   );
+
   const totalValue = data.allProducts.reduce(
     (sum, product) => sum + Number(product.price) * Number(product.quantity),
     0,

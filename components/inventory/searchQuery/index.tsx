@@ -1,24 +1,29 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Field } from "@/components/ui/field";
-import { ButtonGroup } from "@/components/ui/button-group";
-import { useRouter } from "next/navigation";
-
+import { useRouter, useSearchParams } from "next/navigation";
 import { useDebounce } from "use-debounce";
+import { Field } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 
 export function SearchQuery() {
   const [query, setQuery] = useState("");
 
-  const [debounceQuery] = useDebounce(query, 100);
+  const [debounceQuery] = useDebounce(query, 200);
 
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
-    router.push(`?search=${debounceQuery}`);
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (debounceQuery) {
+      params.set("search", debounceQuery);
+    } else {
+      params.delete("search");
+    }
+
+    router.push(`?${params.toString()}`);
   }, [debounceQuery]);
 
   return (
