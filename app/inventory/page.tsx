@@ -27,14 +27,12 @@ export default async function InventoryPage({ searchParams }: SearchParams) {
 
   return (
     <div className="ml-64 p-8 h-screen">
-      <div>
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-primary text-2xl font-semibold">Inventario</h1>
-            <p className="text-sm text-muted-foreground">
-              Gerencie seus produtos e acompanhe os níveis de estoque
-            </p>
-          </div>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-primary text-2xl font-semibold">Inventario</h1>
+          <p className="text-sm text-muted-foreground">
+            Gerencie seus produtos e acompanhe os níveis de estoque
+          </p>
         </div>
       </div>
 

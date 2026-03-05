@@ -20,11 +20,11 @@ type ProductsStockType = {
 export async function getProducts({ filters }: FiltersType) {
   const session = await getSession();
 
-  if (!session.user) {
+  if (!session?.user) {
     throw new Error("Unauthorized");
   }
 
-  const pageSize = 10;
+  const pageSize = 8;
 
   const page = Math.max(Number(filters?.page) || 1, 1);
   const skip = (page - 1) * pageSize;
@@ -86,7 +86,7 @@ export async function getProducts({ filters }: FiltersType) {
 export async function getProductsStock({ data }: ProductsStockType) {
   const session = await getSession();
 
-  if (!session.user) {
+  if (!session?.user) {
     throw new Error("Unauthorized");
   }
 
