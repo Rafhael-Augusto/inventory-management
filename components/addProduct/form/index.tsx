@@ -6,7 +6,7 @@ import { FormData, formSchema } from "./schema";
 
 import { createProduct } from "@/lib/actions/products";
 
-import { Resolver, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { InputGroup, InputGroupInput } from "@/components/ui/input-group";
@@ -28,8 +28,8 @@ export function ProductForm() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({
-    resolver: zodResolver(formSchema) as Resolver<FormData, any>,
+  } = useForm({
+    resolver: zodResolver(formSchema),
   });
 
   async function onSubmit(data: FormData) {
