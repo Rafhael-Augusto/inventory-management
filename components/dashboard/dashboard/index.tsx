@@ -5,6 +5,7 @@ import { TrendingUpIcon } from "lucide-react";
 import { Sidebar } from "@/components/sidebar/sidebar";
 import { ProductsChart } from "@/components/dashboard/productsChart";
 import { getProducts, getProductsStock } from "@/lib/queries/products";
+import { Product } from "@prisma/client";
 
 export async function Dashboard() {
   const { allProducts, itemsLowStock, recentProducts, totalProductsNumber } =
@@ -122,7 +123,7 @@ export async function Dashboard() {
             </div>
 
             <div className="flex flex-col gap-4">
-              {recentProducts.map((product) => {
+              {recentProducts.map((product: Product) => {
                 const stockLevel =
                   product.quantity === 0
                     ? 0
