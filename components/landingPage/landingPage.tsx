@@ -7,12 +7,12 @@ export function LandingPage() {
         <span className="size-1.5 rounded-full bg-green-500" />
         <span className="text-green-600">Estoque, simplificado</span>
       </div>
-      <h1 className="text-8xl max-w-1/2 bg-primary/10 rounded-sm p-8">
+      <h1 className="lg:text-7xl md:text-6xl text-4xl lx:text-8xl max-w-full mx-8 md:mx-0 md:max-w-3/4  xl:max-w-1/2 bg-primary/10 rounded-sm p-8">
         Saiba o que está na <i className="text-primary/95">prateleira</i>, antes
         de acabar.
       </h1>
 
-      <p className="text-xl max-w-1/3 text-primary/60 bg-primary/10 rounded-sm p-8">
+      <p className="max-w-full mx-8 md:mx-0 md:max-w-3/4  xl:max-w-1/2 bg-primary/10 rounded-sm p-8 text-primary/60">
         O Stockwise oferece a pequenas equipes uma visão clara de cada produto,
         preço e nível de estoque — para você parar de adivinhar e repor na hora
         certa.
