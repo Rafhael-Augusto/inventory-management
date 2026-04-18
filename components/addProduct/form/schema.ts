@@ -5,10 +5,7 @@ export const formSchema = z.object({
   price: z.string().min(4, "Preço inválido"),
   quantity: z.coerce.number().int().min(1, "Quantidade inválida"),
   sku: z.string().optional(),
-  lowStockThreshold: z.coerce
-    .number()
-    .int()
-    .min(0, "Limite de estoque inválido"),
+  lowStockAt: z.coerce.number().int().min(0, "Limite de estoque inválido"),
 });
 
 export type FormData = z.infer<typeof formSchema>;

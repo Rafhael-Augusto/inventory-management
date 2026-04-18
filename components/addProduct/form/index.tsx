@@ -37,7 +37,9 @@ export function ProductForm() {
     setError("");
 
     try {
-      const result = await createProduct({ data });
+      const result = await createProduct({
+        data,
+      });
     } catch (err) {
       if (err instanceof Error) {
         console.log(err);
@@ -127,15 +129,15 @@ export function ProductForm() {
 
                 <InputGroup>
                   <InputGroupInput
-                    {...register("lowStockThreshold")}
+                    {...register("lowStockAt")}
                     type="number"
                     id="low-stock"
                     placeholder="0"
                   />
                 </InputGroup>
 
-                {errors.lowStockThreshold && (
-                  <FieldError>{errors.lowStockThreshold.message}</FieldError>
+                {errors.lowStockAt && (
+                  <FieldError>{errors.lowStockAt.message}</FieldError>
                 )}
               </Field>
 

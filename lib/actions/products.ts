@@ -28,6 +28,8 @@ export async function createProduct({ data }: DataType) {
   }
 
   try {
+    console.log(data);
+
     await db.product.create({
       data: {
         name: data.name,

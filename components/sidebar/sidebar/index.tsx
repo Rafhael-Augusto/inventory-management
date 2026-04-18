@@ -7,7 +7,6 @@ import {
   BarChart4Icon,
   PackageIcon,
   PlusIcon,
-  SettingsIcon,
 } from "lucide-react";
 import { UserInfo } from "../userInfo";
 
@@ -33,12 +32,6 @@ const navigation = [
     href: "/add-product",
     icon: PlusIcon,
     id: 2,
-  },
-  {
-    label: "Configuracoes",
-    href: "/settings",
-    icon: SettingsIcon,
-    id: 3,
   },
 ];
 
