@@ -100,7 +100,7 @@ npm run dev
 http://localhost:3000
 ```
 
-# Link pra vercel
+# Deploy
 
 ```bash
 https://inventory-management-gamma-one-18.vercel.app/
