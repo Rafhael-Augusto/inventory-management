@@ -1,24 +1,34 @@
-import { CreateAccountButton } from "./createAccountButton";
+import Link from "next/link";
 
 export function LandingPage() {
   return (
-    <div className="flex flex-col items-center gap-8 w-screen my-16">
-      <div className="flex items-center gap-2">
-        <span className="size-1.5 rounded-full bg-green-500" />
-        <span className="text-green-600">Estoque, simplificado</span>
+    <div className="min-h-screen bg-linear-to-br from-purple-50 to-purple-100 flex items-center justify-center">
+      <div className="container mx-auto px-4 py-16">
+        <div className="text-center">
+          <h1 className="text-5xl font-bold text-gray-900 mb-6">
+            Inventory Management
+          </h1>
+          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+            Streamline your inventory tracking with our powerful, easy-to-use
+            management system. Track products, monitor stock levels, and gain
+            valuable insights.
+          </p>
+          <div className="flex gap-4 justify-center">
+            <Link
+              href="/auth/login"
+              className="bg-purple-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors"
+            >
+              Sign In
+            </Link>
+            <Link
+              href="#"
+              className="bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold border-2 border-purple-600 hover:bg-purple-50 transition-colors"
+            >
+              Learn More
+            </Link>
+          </div>
+        </div>
       </div>
-      <h1 className="lg:text-7xl md:text-6xl text-4xl lx:text-8xl max-w-full mx-8 md:mx-0 md:max-w-3/4  xl:max-w-1/2 bg-primary/10 rounded-sm p-8">
-        Saiba o que está na <i className="text-primary/95">prateleira</i>, antes
-        de acabar.
-      </h1>
-
-      <p className="max-w-full mx-8 md:mx-0 md:max-w-3/4  xl:max-w-1/2 bg-primary/10 rounded-sm p-8 text-primary/60">
-        O Stockwise oferece a pequenas equipes uma visão clara de cada produto,
-        preço e nível de estoque — para você parar de adivinhar e repor na hora
-        certa.
-      </p>
-
-      <CreateAccountButton />
     </div>
   );
 }
