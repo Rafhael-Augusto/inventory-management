@@ -102,6 +102,4 @@ http://localhost:3000
 
 # Deploy
 
-```bash
 https://inventory-management-gamma-one-18.vercel.app/
-```
