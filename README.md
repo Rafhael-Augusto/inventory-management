@@ -1,43 +1,46 @@
 # 📦 Inventory Management
 
-Um dashboard moderno de gerenciamento de estoque, pensado pra te dar visão clara e controle total sobre produtos, valores e níveis de estoque em tempo real.
+Aplicação fullstack para gerenciamento de estoque, construída com Next.js, Prisma e PostgreSQL.
 
-### 📊 Dashboard com métricas principais:
+Permite visualizar métricas, gerenciar produtos e acompanhar níveis de estoque em tempo real.
 
+## 📊 Funcionalidades
+
+### Dashboard
 - Valor total do estoque
 - Total de produtos
 - Produtos com estoque baixo
-  
-### 📦 Gerenciamento de produtos:
 
-- Adicionar produtos
-- Remover produtos
-- 📋 Visualização em tabela do inventário
-- 🔍 Busca otimizada com debounce
+### Produtos
+- Adicionar e remover produtos
+- Visualização em tabela
+- Busca com debounce
 
-### 🔐 Autenticação completa:
-
+### Autenticação
 - Email e senha
 - Login com Google
 - Login com GitHub
+- Implementado com Better Auth
 
-## Frontend
-- Next.js 16
-- React 19
+## 🛠️ Tecnologias
+
+### Frontend
+- Next.js
+- React
 - TailwindCSS
 - shadcn/ui
 - Radix UI
-- Recharts (gráficos)
-  
-## Backend
+- Recharts
+
+### Backend
 - Next.js (Server Actions / API)
 - Prisma ORM
 - PostgreSQL
-  
-## Outros
-- Better Auth (autenticação)
+
+### Outros
+- Better Auth
 - React Hook Form
-- Zod (validação)
+- Zod
 - use-debounce
 - Lucide + React Icons
 
