@@ -1,105 +1,98 @@
-# 📦 Inventory Management
+### Inventory Management
 
-Aplicação fullstack para gerenciamento de estoque, construída com Next.js, Prisma e PostgreSQL.
+Full-stack application for inventory management, built with Next.js, Prisma, and PostgreSQL.
 
-Permite visualizar métricas, gerenciar produtos e acompanhar níveis de estoque em tempo real.
+The system enables users to monitor key inventory metrics, manage products, and track stock levels in real time through an analytical dashboard.
 
-## 📊 Funcionalidades
+## Features
+* Dashboard
+* Total inventory value
+* Total number of products
+* Low stock alerts
+* Products
+* Add and remove products
+* Tabular visualization
+* Optimized search with debounce
+  
+## Authentication
+* Email and password authentication
+* OAuth login with Google and GitHub
+* Implemented using Better Auth
+  
+## Tech Stack
+* Frontend
+* Next.js
+* React
+* TailwindCSS
+* shadcn/ui
+* Radix UI
+* Recharts
+  
+## Backend
+* Next.js (Server Actions / API Routes)
+* Prisma ORM
+* PostgreSQL
+  
+## Other
+* Better Auth
+* React Hook Form
+* Zod
+* use-debounce
+* Lucide React / React Icons
 
-### Dashboard
-- Valor total do estoque
-- Total de produtos
-- Produtos com estoque baixo
+## Installation
 
-### Produtos
-- Adicionar e remover produtos
-- Visualização em tabela
-- Busca com debounce
-
-### Autenticação
-- Email e senha
-- Login com Google
-- Login com GitHub
-- Implementado com Better Auth
-
-## 🛠️ Tecnologias
-
-### Frontend
-- Next.js
-- React
-- TailwindCSS
-- shadcn/ui
-- Radix UI
-- Recharts
-
-### Backend
-- Next.js (Server Actions / API)
-- Prisma ORM
-- PostgreSQL
-
-### Outros
-- Better Auth
-- React Hook Form
-- Zod
-- use-debounce
-- Lucide + React Icons
-
-## 📦 Instalação
-
-### Clone o repositório
-
+* Clone the repository
+  
 ```bash
 git clone git@github.com:Rafhael-Augusto/inventory-management.git
 ```
 
-### Entre na pasta
+* Navigate to the project folder
 
 ```bash
 cd inventory-management
 ```
-
-### Instale as dependências
+* Install dependencies
 
 ```bash
 npm install
 ```
 
-## ⚙️ Configuração
+## Configuration
 
-Crie um arquivo .env:
+* Create a .env file in the root directory:
 
 ```bash
-BETTER_AUTH_SECRET="better-auth-secret"
+BETTER_AUTH_SECRET="your-secret"
 BETTER_AUTH_URL="http://localhost:3000"
 
-GITHUB_CLIENT_ID="github-client-id"
-GITHUB_CLIENT_SECRET="github-client-secret"
+GITHUB_CLIENT_ID="your-github-client-id"
+GITHUB_CLIENT_SECRET="your-github-client-secret"
 
-GOOGLE_CLIENT_ID="google-client-id"
-GOOGLE_CLIENT_SECRET="google-client-secret"
+GOOGLE_CLIENT_ID="your-google-client-id"
+GOOGLE_CLIENT_SECRET="your-google-client-secret"
 
-DATABASE_URL="data-base-url"
+DATABASE_URL="your-database-url"
 ```
 
-## Depois rode:
+* Then run:
 
 ```bash
 npx prisma generate
 npx prisma migrate dev
 ```
 
-## 🚀 Rodando o projeto
+* Running the project
 
 ```bash
 npm run dev
 ```
 
-## Abra:
+* Access the application at:
 
-```bash
 http://localhost:3000
-```
 
-# Deploy
+## Deployment
 
 https://inventory-management-gamma-one-18.vercel.app/
