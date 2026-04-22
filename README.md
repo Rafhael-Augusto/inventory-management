@@ -19,8 +19,7 @@ The system enables users to monitor key inventory metrics, manage products, and 
 * OAuth login with Google and GitHub
 * Implemented using Better Auth
   
-## Tech Stack
-* Frontend
+## Frontend
 * Next.js
 * React
 * TailwindCSS
